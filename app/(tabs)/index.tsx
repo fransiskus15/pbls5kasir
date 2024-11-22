@@ -1,70 +1,162 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import React from 'react';
+import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+const transactions = [
+  { id: '1', name: 'Samantha', date: 'Nov 17', amount: '326.800' },
+  { id: '2', name: 'Samantha', date: 'Nov 17', amount: '326.800' },
+  { id: '3', name: 'Samantha', date: 'Nov 17', amount: '326.800' },
+  { id: '4', name: 'Samantha', date: 'Nov 17', amount: '326.800' },
+  { id: '5', name: 'Samantha', date: 'Nov 17', amount: '326.800' },
+];
 
-export default function HomeScreen() {
+const BalanceScreen = () => {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
+    <View style={styles.container}>
+      {/* Header Section */}
+      <View style={styles.header}>
+        <View style={styles.userInfo}>
+          <Image
+            source={require('@/assets/images/usd-circle.png')} // Ganti dengan URL gambar profil
+            style={styles.avatar}
+          />
+          <View>
+            <Text style={styles.greeting}>Hi, Gros Prima</Text>
+            <Text style={styles.date}>Rabu, Feb 14, 2024</Text>
+          </View>
+        </View>
+      </View>
+
+      {/* Balance Section */}
+      <View style={styles.balanceContainer}>
+        <Text style={styles.balanceLabel}>Saldo Anda</Text>
+        <Text style={styles.balance}>Rp 8.250.000</Text>
+      </View>
+
+      {/* Transactions Section */}
+      <View style={styles.transactionContainer}>
+        <View style={styles.transactionHeader}>
+          <Text style={styles.transactionTitle}>Transaksi</Text>
+          <TouchableOpacity>
+            <Text style={styles.viewMore}>Lainnya</Text>
+          </TouchableOpacity>
+        </View>
+
+        <FlatList
+          data={transactions}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <View style={styles.transactionItem}>
+              <Image
+                source={require('@/assets/images/usd.png')} // Ganti dengan URL gambar ikon transaksi
+                style={styles.transactionIcon}
+              />
+              <View style={styles.transactionDetails}>
+                <Text style={styles.transactionName}>{item.name}</Text>
+                <Text style={styles.transactionDate}>{item.date}</Text>
+              </View>
+              <Text style={styles.transactionAmount}>{item.amount}</Text>
+            </View>
+          )}
         />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+      </View>
+    </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  titleContainer: {
+  container: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+    paddingHorizontal: 20,
+    paddingTop: 45,
+  },
+  header: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    justifyContent: 'space-between',
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  userInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 10,
+  },
+  greeting: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  date: {
+    fontSize: 12,
+    color: '#A0A0A0',
+  },
+  balanceContainer: {
+    backgroundColor: '#FFFFFF',
+    paddingVertical: 20,
+    alignItems: 'center',
+    borderRadius: 16,
+    marginTop: 30,
+  },
+  balanceLabel: {
+    fontSize: 16,
+    color: '#5B5B5B',
+  },
+  balance: {
+    fontSize: 32,
+    fontWeight: '700',
+    color: '#1E1E1E',
+    marginTop: 8,
+  },
+  transactionContainer: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    marginTop: 125,
+    padding: 16,
+  },
+  transactionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  transactionTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  viewMore: {
+    fontSize: 14,
+    color: '#32A7E2',
+  },
+  transactionItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+    color: '#32E258FF',
+  },
+  transactionIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+  },
+  transactionDetails: {
+    flex: 1,
+    marginLeft: 10,
+  },
+  transactionName: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  transactionDate: {
+    fontSize: 12,
+    color: '#A0A0A0',
+  },
+  transactionAmount: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#333',
   },
 });
+
+export default BalanceScreen;
